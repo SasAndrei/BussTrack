@@ -61,10 +61,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+
         // Add a marker in cluj and move the camera
         /* LatLng cluj = new LatLng(46.7712, 23.6236);
         mMap.addMarker(new MarkerOptions().position(cluj).title("Marker in Cluj-Napoca"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(cluj));*/
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(cluj));
 
         locationListener = new LocationListener() {
             @Override
@@ -73,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     mMap.clear();
                     latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
+                    //mMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 }
                 catch (SecurityException e){
@@ -105,6 +109,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         catch (SecurityException e){
             e.printStackTrace();
-        }
+        }*/
     }
 }

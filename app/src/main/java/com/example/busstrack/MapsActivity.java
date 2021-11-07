@@ -47,5 +47,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng cluj = new LatLng(46.7712, 23.6236);
         mMap.addMarker(new MarkerOptions().position(cluj).title("Marker in Cluj-Napoca"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(cluj));
+
+        removeMarkers();
+    }
+
+    private void removeMarkers() {
+        //mMap.ma
     }
 }

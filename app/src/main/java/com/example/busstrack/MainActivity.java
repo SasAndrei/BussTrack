@@ -48,8 +48,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final Button button = findViewById(R.id.btnLogin);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                switchActivities();
+            }
+        });
     }
 
+    private void switchActivities() {
+        Intent switchActivityIntent = new Intent(this, MapsActivity.class);
+        startActivity(switchActivityIntent);
+    }
 
     public void checkCurrentUser() {
         // [START check_current_user]

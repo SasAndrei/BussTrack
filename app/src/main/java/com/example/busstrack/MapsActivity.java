@@ -1,6 +1,7 @@
 package com.example.busstrack;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -15,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -29,12 +31,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.busstrack.databinding.ActivityMapsBinding;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import Traffic.Route;
+import Traffic.Station;
+import Utils.Coordinate;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -46,6 +60,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private final long MIN_TIME = 1000; // 1 second
     private final long MIN_DIST = 5; // 5 Meters
+
+    FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
+    DatabaseReference reference;
+
+    ArrayList<Station> stations = new ArrayList<>();
+    ArrayList<Route> routes = new ArrayList<>();
 
     private LatLng latLng;
 
@@ -72,6 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -83,12 +104,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMaxZoomPreference(20.0f);
 
 
+
         LatLng clujCenter = new LatLng(46.772483, 23.595355);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
 
+        //load Stations
+        getStations();
+//        reference = rootNode.getReference("Station");
+//        stations.add(new Station("P-ta Marasti Sud\n", new Coordinate(46,46,39.4), new Coordinate(23, 36, 41.3)));
+//        stations.add(new Station("Crinului\n", new Coordinate(46,46,40.5), new Coordinate(23, 36, 41.8)));
+//
+//        int stationNumber = 0;
+//        for (Station station: stations)
+//        {
+//            stationNumber++;
+//            reference.child(String.valueOf(stationNumber)).setValue(station);
+//        }
+
+        System.out.println("Statiile sunt in numar de: " + stations.size() + "\n");
 
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
+
+
 
         locationListener = new LocationListener() {
             @Override
@@ -142,5 +180,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         catch (SecurityException e){
             e.printStackTrace();
         }
+    }
+
+
+    public void updateDatabase()
+    {
+        reference = rootNode.getReference("Station");
+        reference.child("1").removeValue();
+    }
+
+    public void getStations()
+    {
+
+        reference = rootNode.getReference("Station");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                stations.clear();
+                for(DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    Station station = snapshot.getValue(Station.class);
+                    stations.add(station);
+                    loadStationOnMap(station);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void loadStationOnMap(Station station)
+    {
+        latLng = new LatLng(station.Latitude.asDouble(), station.Longitude.asDouble());
+        System.out.println("\n\n\nFGJHHIOSEDFUIJG\n\n\n\n");
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);
+        image = Bitmap.createScaledBitmap(image, 70, 70, false);
+        mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
     }
 }

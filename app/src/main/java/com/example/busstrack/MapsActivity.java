@@ -79,8 +79,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
     }
 
     /**
@@ -104,12 +104,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMaxZoomPreference(20.0f);
 
 
-
         LatLng clujCenter = new LatLng(46.772483, 23.595355);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
 
         //load Stations
         getStations();
+        loadStationInfo();
 //        reference = rootNode.getReference("Station");
 //        stations.add(new Station("P-ta Marasti Sud\n", new Coordinate(46,46,39.4), new Coordinate(23, 36, 41.3)));
 //        stations.add(new Station("Crinului\n", new Coordinate(46,46,40.5), new Coordinate(23, 36, 41.8)));
@@ -127,7 +127,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
 
 
-
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -141,16 +140,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-                    new GoogleMap.OnMarkerClickListener()
-                    {
+                    new GoogleMap.OnMarkerClickListener() {
 
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
                             return false;
                         }
                     };
-                }
-                catch (SecurityException e){
+                } catch (SecurityException e) {
                     e.printStackTrace();
                 }
 
@@ -171,34 +168,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         };
-        
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         try {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DIST, locationListener);
-        }
-        catch (SecurityException e){
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
+
     }
 
 
-    public void updateDatabase()
-    {
+    public void updateDatabase() {
         reference = rootNode.getReference("Station");
         reference.child("1").removeValue();
     }
 
-    public void getStations()
-    {
+    public void getStations() {
 
         reference = rootNode.getReference("Station");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 stations.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Station station = snapshot.getValue(Station.class);
                     stations.add(station);
                     loadStationOnMap(station);
@@ -212,12 +206,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    public void loadStationOnMap(Station station)
-    {
-        latLng = new LatLng(station.Latitude.asDouble(), station.Longitude.asDouble());
-        System.out.println("\n\n\nFGJHHIOSEDFUIJG\n\n\n\n");
+    public void loadStationOnMap(Station station) {
+        latLng = new LatLng(station.Longitude.asDouble(), station.Latitude.asDouble());
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);
         image = Bitmap.createScaledBitmap(image, 70, 70, false);
-        mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
+        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
+        marker.setInfoWindowAnchor(20, 30);
+
+    }
+
+    public void loadStationInfo()
+    {
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+
+            @Override
+            public boolean onMarkerClick(Marker arg0) {
+
+                return true;
+            }
+        });
     }
 }

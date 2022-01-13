@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -66,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     ArrayList<Station> stations = new ArrayList<>();
     ArrayList<Route> routes = new ArrayList<>();
+    Dialog dialog;
 
     private LatLng latLng;
 
@@ -73,6 +75,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        dialog = new Dialog(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -113,6 +117,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        reference = rootNode.getReference("Station");
 //        stations.add(new Station("P-ta Marasti Sud\n", new Coordinate(46,46,39.4), new Coordinate(23, 36, 41.3)));
 //        stations.add(new Station("Crinului\n", new Coordinate(46,46,40.5), new Coordinate(23, 36, 41.8)));
+//        stations.add(new Station("Maresal C-tin Prezan\n", new Coordinate(46,46,42.3), new Coordinate(23, 36, 56.8)));
+//        stations.add(new Station("Arte Plastice\n", new Coordinate(46,46,42.2), new Coordinate(23, 37, 02.4)));
+//        stations.add(new Station("Statia Siretului\n", new Coordinate(46,46,49.9), new Coordinate(23, 37, 37.5)));
+//        stations.add(new Station("Aurel Vlaicu\n", new Coordinate(46,46,50.9), new Coordinate(23, 37, 40.2)));
 //
 //        int stationNumber = 0;
 //        for (Station station: stations)
@@ -120,8 +128,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            stationNumber++;
 //            reference.child(String.valueOf(stationNumber)).setValue(station);
 //        }
-
-        System.out.println("Statiile sunt in numar de: " + stations.size() + "\n");
 
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
@@ -181,8 +187,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void updateDatabase() {
-        reference = rootNode.getReference("Station");
-        reference.child("1").removeValue();
+        //reference = rootNode.getReference("Station");
+       // reference.child("1").removeValue();
     }
 
     public void getStations() {
@@ -223,6 +229,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker arg0) {
 
+                dialog.setContentView(R.layout.station_popup);
+                dialog.show();
                 return true;
             }
         });

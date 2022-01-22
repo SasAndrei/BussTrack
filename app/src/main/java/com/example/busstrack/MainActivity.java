@@ -34,6 +34,12 @@ import com.google.firebase.auth.PlayGamesAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,25 +47,47 @@ import java.util.concurrent.TimeUnit;
 
 import Accounts.Admin;
 import Accounts.User;
+import Traffic.Station;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     Server fire = new Server();
+    ArrayList<User> users = new ArrayList<>();
+    FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
+    DatabaseReference reference;
     Button switchToSecondActivity;
     View v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+//        LoadStations obj = new LoadStations();
+//        Thread thread = new Thread(obj);
+//        thread.start();
+
+        Admin acc = new Admin("admin", "admin1");
+        //System.out.println("HEEEREEEEEEEEE");
+        ArrayList<User> listing = new ArrayList<>();
+        listing.add(acc);
+        acc = new Admin("user", "user1");
+        listing.add(acc);
+        getUsers();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Button button = findViewById(R.id.btnLogin);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                switchActivities();
+                System.out.println("click");
+                fire.<User>pushData("Accounts", listing);
+                //getUsers();
             }
         });
+    }
+
+    protected void onReady() {
+
     }
 
     private void switchActivities() {
@@ -67,15 +95,50 @@ public class MainActivity extends AppCompatActivity {
         startActivity(switchActivityIntent);
     }
 
+    public void getUsers() {
+
+        reference = rootNode.getReference("Accounts");
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                users.clear();
+                int ok = 0;
+                String pass = new String();
+                String usr = new String();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (ok == 0) {
+                        pass = snapshot.getValue(String.class);
+                        ok++;
+                    }
+                    else
+                        usr = snapshot.getValue(String.class);
+                }
+                Admin station = new Admin(usr, pass);
+                System.out.println(station);
+                users.add(station);
+                checkCurrentUser();
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
     public void checkCurrentUser() {
-        // [START check_current_user]
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-        } else {
-            // No user is signed in
+        System.out.println("switch");
+        for (User acc : users) {
+            System.out.println("switching");
+            if (acc.getUsername() == "admin")
+                switchActivities();
         }
-        // [END check_current_user]
     }
 
     public void getUserProfile() {

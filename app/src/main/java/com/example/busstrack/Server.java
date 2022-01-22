@@ -83,6 +83,7 @@ public class Server {
         System.out.println("HELLLLOOOO" + id);
         for (T element : tArrayList) {
             id++;
+
             reference.child(String.valueOf(id)).setValue(element);
         }
     }

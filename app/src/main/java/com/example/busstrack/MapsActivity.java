@@ -115,12 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getStations();
         loadStationInfo();
 //        reference = rootNode.getReference("Station");
-//        stations.add(new Station("P-ta Marasti Sud\n", new Coordinate(46,46,39.4), new Coordinate(23, 36, 41.3)));
-//        stations.add(new Station("Crinului\n", new Coordinate(46,46,40.5), new Coordinate(23, 36, 41.8)));
-//        stations.add(new Station("Maresal C-tin Prezan\n", new Coordinate(46,46,42.3), new Coordinate(23, 36, 56.8)));
-//        stations.add(new Station("Arte Plastice\n", new Coordinate(46,46,42.2), new Coordinate(23, 37, 02.4)));
-//        stations.add(new Station("Statia Siretului\n", new Coordinate(46,46,49.9), new Coordinate(23, 37, 37.5)));
-//        stations.add(new Station("Aurel Vlaicu\n", new Coordinate(46,46,50.9), new Coordinate(23, 37, 40.2)));
+
 //
 //        int stationNumber = 0;
 //        for (Station station: stations)
@@ -140,6 +135,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     mMap.clear();
                     latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    getStations();
+                    loadStationInfo();
 
                     Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_undefined);
                     image = Bitmap.createScaledBitmap(image, 70, 70, false);
@@ -217,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);
         image = Bitmap.createScaledBitmap(image, 70, 70, false);
         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
-        marker.setInfoWindowAnchor(20, 30);
+        //marker.setInfoWindowAnchor(20, 30);
 
     }
 

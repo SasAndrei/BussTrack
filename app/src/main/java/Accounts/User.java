@@ -10,4 +10,12 @@ public abstract class User {
     public String getUsername() { return username; }
 
     public String getPassword() { return password; }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

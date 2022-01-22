@@ -54,6 +54,7 @@ public class Server {
         int id = 0;
         for (T element : tArrayList) {
             id++;
+
             reference.child(String.valueOf(id)).setValue(element);
         }
     }

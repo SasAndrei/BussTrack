@@ -78,11 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        binding.runOnUIThread(new Runnable(){
-//            public void run(){
-//
-//            }
-//        });
+        //new LoadStations().execute();
 
 
         super.onCreate(savedInstanceState);
@@ -124,6 +120,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng clujCenter = new LatLng(46.772483, 23.595355);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
         //load Stations
+
+        System.out.println("HELLLLOOOO");
+        reference = rootNode.getReference("Station");
+        int id = 0;
+        System.out.println(reference.child(String.valueOf(8)).child("Name").getKey());
+//        while(reference.child(String.valueOf(id)) != null)
+//        {
+//            id++;
+//        }
+        System.out.println("HELLLLOOOO" + id);
 //        System.out.println("HEREEEEEEEEE1");
 //        System.out.println("Station is empty: " +  stations.isEmpty());
 //        for (Station station: stations)

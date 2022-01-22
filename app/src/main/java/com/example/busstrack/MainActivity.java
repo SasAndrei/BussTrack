@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        LoadStations obj = new LoadStations();
-//        Thread thread = new Thread(obj);
-//        thread.start();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

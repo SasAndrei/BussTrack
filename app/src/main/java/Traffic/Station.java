@@ -19,4 +19,9 @@ public class Station {
     public Station()
     {
     }
+    @Override
+    public String toString()
+    {
+        return "Name of station: " + Name + ", Longitude and Latitude";
+    }
 }

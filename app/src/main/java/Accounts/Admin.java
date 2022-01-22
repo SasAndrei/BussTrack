@@ -3,7 +3,8 @@ package Accounts;
 public class Admin extends User{
 
     public Admin(String user, String pass) {
-
+        username = user;
+        password = pass;
     }
 
     @Override

@@ -51,16 +51,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Admin account = new Admin("admin", "admin");
-        ArrayList<User> listing = new ArrayList<>();
-        listing.add(account);
+//        LoadStations obj = new LoadStations();
+//        Thread thread = new Thread(obj);
+//        thread.start();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Button button = findViewById(R.id.btnLogin);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 switchActivities();
-                fire.<User>pushData("Accounts", listing);
             }
         });
     }

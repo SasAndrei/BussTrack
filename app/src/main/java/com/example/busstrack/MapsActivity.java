@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -65,16 +66,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
 
-    ArrayList<Station> stations = new ArrayList<>();
+    public static ArrayList<Station> stations = new ArrayList<>();
     ArrayList<Route> routes = new ArrayList<>();
     Dialog dialog;
 
-    Server fire = new Server();
 
-    private LatLng latLng;
 
+    private static LatLng latLng;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        binding.runOnUIThread(new Runnable(){
+//            public void run(){
+//
+//            }
+//        });
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -101,6 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -112,11 +123,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng clujCenter = new LatLng(46.772483, 23.595355);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
-
         //load Stations
-        fire.<Station>getData("Station", stations);
-        //getStations();
-        loadStationInfo();
+//        System.out.println("HEREEEEEEEEE1");
+//        System.out.println("Station is empty: " +  stations.isEmpty());
+//        for (Station station: stations)
+//        {
+//            System.out.println(station);
+//        }
+
+
+
 //        reference = rootNode.getReference("Station");
 
 //
@@ -129,6 +145,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
+        System.out.println("HEREEEEEEEEE2");
+
 
 
         locationListener = new LocationListener() {
@@ -139,9 +157,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.clear();
                     latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    System.out.println(stations);
-                    //getStations();
-                    loadStationInfo();
+//                    fire.<Station>getData("Station", Station.class);
+//                    loadStationsOnMap(stations);
+//                    loadStationInfo();
 
                     Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_undefined);
                     image = Bitmap.createScaledBitmap(image, 70, 70, false);
@@ -213,7 +231,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-
+    public void loadStationsOnMap(ArrayList<Station> stations)
+    {
+        for (Station station: stations)
+        {
+            loadStationOnMap(station);
+        }
+    }
     public void loadStationOnMap(Station station) {
         latLng = new LatLng(station.Longitude.asDouble(), station.Latitude.asDouble());
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);

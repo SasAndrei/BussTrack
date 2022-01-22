@@ -1,6 +1,9 @@
 package com.example.busstrack;
 
+import android.os.Build;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,16 +20,24 @@ public class Server {
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
 
-    public <T> void getData(String place, ArrayList<T> tArrayList) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public <T> void getData(String place, Class<T> typeClass) {
 
         reference = rootNode.getReference(place);
+        System.out.println("We are in getData");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                tArrayList.clear();
+                ArrayList<T> tArrayList = new ArrayList<>();
+                T element = null;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    T element = (T) snapshot.getValue();
+                    element = snapshot.getValue(typeClass);
                     tArrayList.add(element);
+                }
+                if(element instanceof Station)
+                {
+                    MapsActivity.stations = (ArrayList<Station>) tArrayList;
+                    System.out.println("We are in onDataChange");
                 }
             }
 

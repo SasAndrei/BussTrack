@@ -2,8 +2,8 @@ package Accounts;
 
 public abstract class User {
 
-    private String username;
-    private String password;
+    protected String username;
+    protected String password;
 
     public abstract void login();
 

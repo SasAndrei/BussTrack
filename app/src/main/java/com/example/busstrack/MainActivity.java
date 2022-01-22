@@ -35,23 +35,32 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import Accounts.Admin;
+import Accounts.User;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    Server fire = new Server();
     Button switchToSecondActivity;
     View v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Admin account = new Admin("admin", "admin");
+        ArrayList<User> listing = new ArrayList<>();
+        listing.add(account);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Button button = findViewById(R.id.btnLogin);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 switchActivities();
+                fire.<User>pushData("Accounts", listing);
             }
         });
     }

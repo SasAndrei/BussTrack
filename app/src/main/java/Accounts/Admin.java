@@ -1,6 +1,11 @@
 package Accounts;
 
 public class Admin extends User{
+
+    public Admin(String user, String pass) {
+
+    }
+
     @Override
     public void login() {
 

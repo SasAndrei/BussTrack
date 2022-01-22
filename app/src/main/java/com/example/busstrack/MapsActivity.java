@@ -69,6 +69,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<Route> routes = new ArrayList<>();
     Dialog dialog;
 
+    Server fire = new Server();
+
     private LatLng latLng;
 
     @Override
@@ -112,7 +114,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
 
         //load Stations
-        getStations();
+        fire.<Station>getData("Station", stations);
+        //getStations();
         loadStationInfo();
 //        reference = rootNode.getReference("Station");
 
@@ -136,7 +139,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.clear();
                     latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    getStations();
+                    System.out.println(stations);
+                    //getStations();
                     loadStationInfo();
 
                     Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_undefined);

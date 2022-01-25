@@ -15,6 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import Accounts.Admin;
+import Accounts.User;
 import Traffic.Station;
 
 public class Server {
@@ -24,11 +26,9 @@ public class Server {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public <T> void getData(String place, Class<T> typeClass) {
+    public <T> void getData(MainActivity instance) {
 
-        //reference = rootNode.getReference(place);
         reference = rootNode.getReference();
-        System.out.println("We are in getData");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -39,18 +39,21 @@ public class Server {
                     if("Station".equals(snapshot.getKey()))
                     {
                         //put stations into list
+                        for(DataSnapshot stationAsSnapshot : snapshot.getChildren())
+                        {
+                            Station station = stationAsSnapshot.getValue(Station.class);
+                            MapsActivity.stations.add(station);
+                        }
                     }
                     if("Accounts".equals(snapshot.getKey()))
                     {
-                        //put stations into list
+                        //put accounts into list
+                        for(DataSnapshot accountAsSnapshot : snapshot.getChildren())
+                        {
+                            Admin user = accountAsSnapshot.getValue(Admin.class);
+                            instance.usersWithNotification.add(user);
+                        }
                     }
-//                    element = snapshot.getValue(typeClass);
-//                    tArrayList.add(element);
-                }
-                if(element instanceof Station)
-                {
-                    MapsActivity.stations = (ArrayList<Station>) tArrayList;
-                    System.out.println("We are in onDataChange");
                 }
             }
 

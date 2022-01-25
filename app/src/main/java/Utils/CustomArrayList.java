@@ -22,6 +22,7 @@ public class CustomArrayList<T> extends ArrayList<T> {
 
         instance.checkCurrentUser();
 
+
         return value;
     }
 

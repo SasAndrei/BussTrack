@@ -121,8 +121,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng clujCenter = new LatLng(46.772483, 23.595355);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
         //load Stations
+        loadStationsOnMap(stations);
+        loadStationInfo();
 
-         getData("Station", Station.class);
+         //getData("Station", Station.class);
 //        System.out.println("HEREEEEEEEEE1");
 //        System.out.println("Station is empty: " +  stations.isEmpty());
 //        for (Station station: stations)
@@ -153,9 +155,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.clear();
                     latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-//                    fire.<Station>getData("Station", Station.class);
-//                    loadStationsOnMap(stations);
-//                    loadStationInfo();
+//                  fire.<Station>getData("Station", Station.class);
+                    loadStationsOnMap(stations);
+                    loadStationInfo();
 
                     Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_undefined);
                     image = Bitmap.createScaledBitmap(image, 70, 70, false);
@@ -201,18 +203,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private <T> void getData(String place, Class<T> typeClass) {
-        reference = rootNode.getReference(place);
-       // if(typeClass == Station.class)
-       // {
-            System.out.println("I AM IN getDATA from MapsActivity");
-            fire.<Station>getData(place, Station.class);
-            //reference.child(String.valueOf(0)).setValue(new Station());
-      //  }
-
-
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    private <T> void getData(String place, Class<T> typeClass) {
+//        reference = rootNode.getReference(place);
+//       // if(typeClass == Station.class)
+//       // {
+//            System.out.println("I AM IN getDATA from MapsActivity");
+//           // fire.<Station>getData(place, Station.class);
+//            //reference.child(String.valueOf(0)).setValue(new Station());
+//      //  }
+//
+//
+//    }
 
 
     public void updateDatabase() {
@@ -260,10 +262,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {
-
-
-
-
             @Override
             public boolean onMarkerClick(Marker arg0) {
 

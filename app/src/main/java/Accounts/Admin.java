@@ -6,6 +6,13 @@ public class Admin extends User{
         username = user;
         password = pass;
     }
+    public Admin() {
+
+    }
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 
     @Override
     public void login() {

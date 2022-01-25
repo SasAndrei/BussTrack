@@ -44,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -57,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     Server fire = new Server();
     ArrayList<User> users = new ArrayList<>();
-    CustomArrayList<User> usersWithNotification = new CustomArrayList<>(this);
+    public CustomArrayList<User> usersWithNotification = new CustomArrayList<>(this);
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
-    Button switchToSecondActivity;
+    boolean receivedLoginInput = false;
+    Button switchToSecondActivit1y;
     View v;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 //        Thread thread = new Thread(obj);
 //        thread.start();
 
-        fire.<Station>getData("Station", Station.class);
+          fire.<Station>getData( this);
 
 //        Admin acc = new Admin("admin", "admin1");
 //        //System.out.println("HEEEREEEEEEEEE");
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("click");
+                //receivedLoginInput = true;
+                //checkCurrentUser(); //could give and error if Login button is pressed before Firebase Accounts are transfered into the local arraylist
                 //fire.<User>pushData("Accounts", listing);
                 //getUsers();
             }
@@ -138,14 +142,22 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
-
     public void checkCurrentUser() {
-        System.out.println("CHECKING USERS");
         for (User acc : usersWithNotification.getList()) {
-            System.out.println("switching");
-            if (acc.getUsername() == "admin")
+
+            if (acc.getUsername().equals("admin")) {
                 switchActivities();
+            }
         }
+//        if(receivedLoginInput)
+//        {
+//            for (User acc : usersWithNotification.getList()) {
+//                if (acc.getUsername().equals("admin")) {
+//                    switchActivities();
+//                }
+//            }
+//        }
+
 //        System.out.println("switch");
 //        for (User acc : users) {
 //            System.out.println("switching");

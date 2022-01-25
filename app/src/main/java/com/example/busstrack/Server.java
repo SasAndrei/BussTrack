@@ -75,8 +75,6 @@ public class Server {
 
     public <T> void pushData(String place, ArrayList<T> listToAdd) {
 
-        System.out.println("Am intrat in PUSH DATA");
-
         reference = rootNode.getReference();
         int idToAdd = 0;
         if(place.equals("Station"))

@@ -3,11 +3,13 @@ package Accounts;
 public class Admin extends User{
 
     public Admin(String user, String pass) {
-        username = user;
-        password = pass;
+        super(user,pass);
     }
     public Admin() {
 
+    }
+    public Admin(String user, String pass, String email) {
+        super(user,pass, email);
     }
     @Override
     public String toString() {

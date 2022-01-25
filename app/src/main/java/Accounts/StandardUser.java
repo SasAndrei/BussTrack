@@ -6,6 +6,16 @@ import Traffic.Route;
 import Traffic.Station;
 
 public class StandardUser extends User{
+
+    public StandardUser(String user, String pass) {
+        super(user,pass);
+    }
+    public StandardUser(String user, String pass, String email) {
+        super(user,pass, email);
+    }
+
+    public StandardUser() {
+    }
     @Override
     public void login() {
 

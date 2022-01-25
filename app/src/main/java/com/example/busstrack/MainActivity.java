@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import Accounts.Admin;
+import Accounts.StandardUser;
 import Accounts.User;
 import Traffic.Station;
 import Utils.CustomArrayList;
@@ -140,6 +141,11 @@ public class MainActivity extends AppCompatActivity {
 
                         if (password.equals(confirm)) {
 
+                            StandardUser user = new StandardUser(username, password, email);
+                            ArrayList<User> listToAdd = new ArrayList<>();
+                            listToAdd.add(user);
+                            fire.<User>pushData("Accounts", listToAdd);
+
                             setContentView(R.layout.activity_main);
                             loginMenu();
                         }
@@ -222,20 +228,20 @@ public class MainActivity extends AppCompatActivity {
     public void checkCurrentUser() {
         System.out.println("Hello");
         for (User acc : usersWithNotification.getList()) {
-            if (acc.getUsername().equals("admin") && neverSwitchedBefore) {
-                neverSwitchedBefore = false;
-                switchActivities();
-            }
-            System.out.println(acc);
-            if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
-                if (acc.getUsername().equals("admin")) {
-                    
-                }
-                else
-                {
-                    switchActivities();
-                }
-            }
+//            if (acc.getUsername().equals("admin") && neverSwitchedBefore) {
+//                neverSwitchedBefore = false;
+//                switchActivities();
+//            }
+//            System.out.println(acc);
+//            if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
+//                if (acc.getUsername().equals("admin")) {
+//
+//                }
+//                else
+//                {
+//                    switchActivities();
+//                }
+//            }
         }
 //        if(receivedLoginInput)
 //        {

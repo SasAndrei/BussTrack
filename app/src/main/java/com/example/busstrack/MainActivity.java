@@ -2,9 +2,11 @@ package com.example.busstrack;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -48,17 +50,20 @@ import java.util.concurrent.TimeUnit;
 import Accounts.Admin;
 import Accounts.User;
 import Traffic.Station;
+import Utils.CustomArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     Server fire = new Server();
     ArrayList<User> users = new ArrayList<>();
+    CustomArrayList<User> usersWithNotification = new CustomArrayList<>(this);
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
     Button switchToSecondActivity;
     View v;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -66,13 +71,15 @@ public class MainActivity extends AppCompatActivity {
 //        Thread thread = new Thread(obj);
 //        thread.start();
 
-        Admin acc = new Admin("admin", "admin1");
-        //System.out.println("HEEEREEEEEEEEE");
-        ArrayList<User> listing = new ArrayList<>();
-        listing.add(acc);
-        acc = new Admin("user", "user1");
-        listing.add(acc);
-        getUsers();
+        fire.<Station>getData("Station", Station.class);
+
+//        Admin acc = new Admin("admin", "admin1");
+//        //System.out.println("HEEEREEEEEEEEE");
+//        ArrayList<User> listing = new ArrayList<>();
+//        listing.add(acc);
+//        acc = new Admin("user", "user1");
+//        listing.add(acc);
+//        getUsers();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -80,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("click");
-                fire.<User>pushData("Accounts", listing);
+                //fire.<User>pushData("Accounts", listing);
                 //getUsers();
             }
         });
@@ -133,12 +140,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkCurrentUser() {
-        System.out.println("switch");
-        for (User acc : users) {
+        System.out.println("CHECKING USERS");
+        for (User acc : usersWithNotification.getList()) {
             System.out.println("switching");
             if (acc.getUsername() == "admin")
                 switchActivities();
         }
+//        System.out.println("switch");
+//        for (User acc : users) {
+//            System.out.println("switching");
+//            if (acc.getUsername() == "admin")
+//                switchActivities();
+//        }
     }
 
     public void getUserProfile() {

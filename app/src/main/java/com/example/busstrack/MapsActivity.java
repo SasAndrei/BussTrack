@@ -65,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
+    Server fire = new Server();
 
     public static ArrayList<Station> stations = new ArrayList<>();
     ArrayList<Route> routes = new ArrayList<>();
@@ -121,23 +122,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
         //load Stations
 
-        System.out.println("HELLLLOOOO");
-        reference = rootNode.getReference("Station");
-        int id = 0;
-        System.out.println(reference.child(String.valueOf(8)).child("Name").getKey());
-//        while(reference.child(String.valueOf(id)) != null)
-//        {
-//            id++;
-//        }
-        System.out.println("HELLLLOOOO" + id);
+         getData("Station", Station.class);
 //        System.out.println("HEREEEEEEEEE1");
 //        System.out.println("Station is empty: " +  stations.isEmpty());
 //        for (Station station: stations)
 //        {
 //            System.out.println(station);
 //        }
-
-
 
 //        reference = rootNode.getReference("Station");
 
@@ -151,7 +142,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
-        System.out.println("HEREEEEEEEEE2");
 
 
 
@@ -211,6 +201,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private <T> void getData(String place, Class<T> typeClass) {
+        reference = rootNode.getReference(place);
+       // if(typeClass == Station.class)
+       // {
+            System.out.println("I AM IN getDATA from MapsActivity");
+            fire.<Station>getData(place, Station.class);
+            //reference.child(String.valueOf(0)).setValue(new Station());
+      //  }
+
+
+    }
+
 
     public void updateDatabase() {
         //reference = rootNode.getReference("Station");
@@ -257,6 +260,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {
+
+
+
 
             @Override
             public boolean onMarkerClick(Marker arg0) {

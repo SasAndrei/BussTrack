@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
     public CustomArrayList<User> usersWithNotification = new CustomArrayList<>(this);
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
-    boolean receivedLoginInput = false;
+
+    boolean loadedData = false;
+    public PopupWindow loadingWindow;
 
     boolean neverSwitchedBefore = true;
 
@@ -99,8 +103,25 @@ public class MainActivity extends AppCompatActivity {
 //        listing.add(acc);
 //        getUsers();
 
+
         super.onCreate(savedInstanceState);
+
+        v = findViewById(android.R.id.content).getRootView();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //...here i'm waiting 5 seconds before hiding the custom dialog
+                //...you can do whenever you want or whenever your work is done
+                onButtonLoadingWindowClick(v, R.layout.loading);
+                if (loadedData)
+                    loadingWindow.dismiss();
+            }
+        },10000);
+
         setContentView(R.layout.activity_main);
+
         loginMenu();
     }
 
@@ -178,6 +199,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void onButtonLoadingWindowClick(View view, int layout) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(layout, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        loadingWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        loadingWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+    }
+
     private void switchActivities() {
         Intent switchActivityIntent = new Intent(this, MapsActivity.class);
         startActivity(switchActivityIntent);
@@ -219,13 +258,10 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
     public void checkCurrentUser() {
         System.out.println("Hello");
         for (User acc : usersWithNotification.getList()) {
-            if (acc.getUsername().equals("admin") && neverSwitchedBefore) {
-                neverSwitchedBefore = false;
-                switchActivities();
-            }
             System.out.println(acc);
             if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
                 if (acc.getUsername().equals("admin")) {

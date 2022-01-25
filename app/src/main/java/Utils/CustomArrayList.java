@@ -20,8 +20,8 @@ public class CustomArrayList<T> extends ArrayList<T> {
     public boolean add(T elementToAdd) {
         boolean value = list.add(elementToAdd);
 
-        instance.checkCurrentUser();
-
+        if(instance.loadingWindow != null)
+            instance.loadingWindow.dismiss();
 
         return value;
     }

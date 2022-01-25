@@ -9,9 +9,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -63,9 +69,19 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
     boolean receivedLoginInput = false;
+
     boolean neverSwitchedBefore = true;
-    Button switchToSecondActivit1y;
+
+    private Button button;
+    private Button register;
+    private Button signUp;
+
     View v;
+
+    private String username;
+    private String email;
+    private String password;
+    private String confirm;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -85,20 +101,81 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Button button = findViewById(R.id.btnLogin);
+        loginMenu();
+    }
+
+    public void loginMenu() {
+        button = findViewById(R.id.btnLogin);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("click");
-                //receivedLoginInput = true;
-                //checkCurrentUser(); //could give and error if Login button is pressed before Firebase Accounts are transfered into the local arraylist
-                //fire.<User>pushData("Accounts", listing);
-                //getUsers();
+                EditText usrname = findViewById(R.id.edt_userName);
+                EditText pass = findViewById(R.id.edt_password);
+                username = usrname.getText().toString();
+                password = pass.getText().toString();
+                System.out.println("U:" + username + "P:" + password);
+                checkCurrentUser();
+            }
+        });
+        register = findViewById(R.id.btnRegister);
+        register.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("click");
+                setContentView(R.layout.register);
+
+                signUp = findViewById(R.id.btnSignUp);
+                signUp.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        System.out.println("click");
+
+                        EditText emailf = findViewById(R.id.edt_email);
+                        EditText usrname = findViewById(R.id.edt_userName);
+                        EditText passf = findViewById(R.id.edt_password);
+                        EditText conf = findViewById(R.id.edt_confirmPassword);
+
+                        email = emailf.getText().toString();
+                        username = usrname.getText().toString();
+                        password = passf.getText().toString();
+                        confirm = conf.getText().toString();
+
+                        if (password.equals(confirm)) {
+
+                            setContentView(R.layout.activity_main);
+                            loginMenu();
+                        }
+                        else
+                            onButtonShowPopupWindowClick(v, R.layout.wrongpassword);
+                    }
+                });
             }
         });
     }
 
-    protected void onReady() {
+    public void onButtonShowPopupWindowClick(View view, int layout) {
 
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(layout, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 
     private void switchActivities() {
@@ -143,12 +220,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void checkCurrentUser() {
+        System.out.println("Hello");
         for (User acc : usersWithNotification.getList()) {
-
-
             if (acc.getUsername().equals("admin") && neverSwitchedBefore) {
                 neverSwitchedBefore = false;
                 switchActivities();
+            }
+            System.out.println(acc);
+            if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
+                if (acc.getUsername().equals("admin")) {
+                    
+                }
+                else
+                {
+                    switchActivities();
+                }
             }
         }
 //        if(receivedLoginInput)

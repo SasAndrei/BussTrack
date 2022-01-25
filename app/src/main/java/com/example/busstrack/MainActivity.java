@@ -56,12 +56,14 @@ import Utils.CustomArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    public static Integer userCount;
     Server fire = new Server();
     ArrayList<User> users = new ArrayList<>();
     public CustomArrayList<User> usersWithNotification = new CustomArrayList<>(this);
     FirebaseDatabase rootNode = FirebaseDatabase.getInstance();
     DatabaseReference reference;
     boolean receivedLoginInput = false;
+    boolean neverSwitchedBefore = true;
     Button switchToSecondActivit1y;
     View v;
 
@@ -69,11 +71,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        LoadStations obj = new LoadStations();
-//        Thread thread = new Thread(obj);
-//        thread.start();
 
           fire.<Station>getData( this);
+
 
 //        Admin acc = new Admin("admin", "admin1");
 //        //System.out.println("HEEEREEEEEEEEE");
@@ -145,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
     public void checkCurrentUser() {
         for (User acc : usersWithNotification.getList()) {
 
-            if (acc.getUsername().equals("admin")) {
+
+            if (acc.getUsername().equals("admin") && neverSwitchedBefore) {
+                neverSwitchedBefore = false;
                 switchActivities();
             }
         }

@@ -36,6 +36,10 @@ public class Server {
                 ArrayList<T> tArrayList = new ArrayList<>();
                 T element = null;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if("StationCount".equals(snapshot.getKey()))
+                    {
+                        MapsActivity.stationCount = snapshot.getValue(Integer.class);
+                    }
                     if("Station".equals(snapshot.getKey()))
                     {
                         //put stations into list
@@ -44,6 +48,10 @@ public class Server {
                             Station station = stationAsSnapshot.getValue(Station.class);
                             MapsActivity.stations.add(station);
                         }
+                    }
+                    if("AccountsCount".equals(snapshot.getKey()))
+                    {
+                        MainActivity.userCount = snapshot.getValue(Integer.class);
                     }
                     if("Accounts".equals(snapshot.getKey()))
                     {
@@ -64,34 +72,30 @@ public class Server {
         });
     }
 
-//
-//    public <T> void pushData(String place, ArrayList<T> tArrayList) {
-//
-//        reference = rootNode.getReference("Station");
-//        int id = 0;
-//        while(reference.child(String.valueOf(id)) != null)
-//        {
-//            id++;
-//        }
-//        System.out.println("HELLLLOOOO" + id);
-//        for (T element : tArrayList) {
-//            id++;
-//
-//            reference.child(String.valueOf(id)).setValue(element);
-//        }
-//    }
 
-//
+    public <T> void pushData(String place, ArrayList<T> listToAdd) {
 
+        System.out.println("Am intrat in PUSH DATA");
 
-//    public <T> void pushData(String place, ArrayList<T> tArrayList) {
-//
-//        reference = rootNode.getReference(place);
-//        int id = 0;
-//        for (T element : tArrayList) {
-//            id++;
-//            reference.child(String.valueOf(id)).setValue(element);
-//        }
-//    }
+        reference = rootNode.getReference();
+        int idToAdd = 0;
+        if(place.equals("Station"))
+        {
+            idToAdd = MapsActivity.stationCount + 1;
+            MapsActivity.stationCount += listToAdd.size();
+            reference.child("StationCount").setValue(MapsActivity.stationCount);
+        }
+        if(place.equals("Accounts"))
+        {
+            idToAdd = MainActivity.userCount + 1;
+            MainActivity.userCount += listToAdd.size();
+            reference.child("AccountsCount").setValue(MainActivity.userCount);
+        }
+        reference = rootNode.getReference(place);
+        for (T element : listToAdd) {
+            reference.child(String.valueOf(idToAdd)).setValue(element);
+            idToAdd++;
+        }
+    }
 
 }

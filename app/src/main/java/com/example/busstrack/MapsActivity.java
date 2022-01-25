@@ -54,6 +54,7 @@ import Utils.Coordinate;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    public static Integer stationCount;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
@@ -78,9 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        //new LoadStations().execute();
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
@@ -120,27 +118,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng clujCenter = new LatLng(46.772483, 23.595355);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
+
+         // fire.<Station>pushData("Station", newStations);
+
         //load Stations
         loadStationsOnMap(stations);
         loadStationInfo();
-
-         //getData("Station", Station.class);
-//        System.out.println("HEREEEEEEEEE1");
-//        System.out.println("Station is empty: " +  stations.isEmpty());
-//        for (Station station: stations)
-//        {
-//            System.out.println(station);
-//        }
-
-//        reference = rootNode.getReference("Station");
-
-//
-//        int stationNumber = 0;
-//        for (Station station: stations)
-//        {
-//            stationNumber++;
-//            reference.child(String.valueOf(stationNumber)).setValue(station);
-//        }
 
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
@@ -154,10 +137,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     mMap.clear();
                     latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-//                  fire.<Station>getData("Station", Station.class);
-                    loadStationsOnMap(stations);
-                    loadStationInfo();
 
                     Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.profile_undefined);
                     image = Bitmap.createScaledBitmap(image, 70, 70, false);
@@ -203,45 +182,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    private <T> void getData(String place, Class<T> typeClass) {
-//        reference = rootNode.getReference(place);
-//       // if(typeClass == Station.class)
-//       // {
-//            System.out.println("I AM IN getDATA from MapsActivity");
-//           // fire.<Station>getData(place, Station.class);
-//            //reference.child(String.valueOf(0)).setValue(new Station());
-//      //  }
-//
-//
-//    }
-
-
-    public void updateDatabase() {
-        //reference = rootNode.getReference("Station");
-       // reference.child("1").removeValue();
-    }
-
-    public void getStations() {
-
-        reference = rootNode.getReference("Station");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                stations.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Station station = snapshot.getValue(Station.class);
-                    stations.add(station);
-                    loadStationOnMap(station);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
     public void loadStationsOnMap(ArrayList<Station> stations)
     {
         for (Station station: stations)
@@ -254,7 +194,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);
         image = Bitmap.createScaledBitmap(image, 70, 70, false);
         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
-        //marker.setInfoWindowAnchor(20, 30);
+
 
     }
 

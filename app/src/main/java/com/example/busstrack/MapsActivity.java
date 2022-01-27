@@ -21,6 +21,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -86,6 +87,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static Integer routeCount;
 
     Dialog dialog;
+    Dialog selected;
+    public static Dialog notification;
 
 
     private static LatLng latLng;
@@ -98,6 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         dialog = new Dialog(this);
+        notification = new Dialog(this);
+        selected = new Dialog(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -138,6 +143,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //load Stations
         loadStationsOnMap(stations);
         loadStationInfo();
+        loadBusesOnMap(busses);
 
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
@@ -210,8 +216,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         image = Bitmap.createScaledBitmap(image, 70, 70, false);
         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
         marker.setTag(station);
+    }
 
-
+    public void loadBusesOnMap(ArrayList<Bus> buses)
+    {
+        for (Bus bus: buses)
+        {
+            loadBusOnMap(bus);
+        }
+    }
+    public void loadBusOnMap(Bus bus) {
+        latLng = new LatLng(bus.getLongitude().asDouble(), bus.getLatitude().asDouble());
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);
+        image = Bitmap.createScaledBitmap(image, 70, 70, false);
+        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
+        marker.setTag(bus);
     }
 
     public BusRequest createBusRequest(Station stationWhereUserLocated, Route routeUserWants)
@@ -237,6 +256,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                      BusRequest busRequest1 = (BusRequest) button.getTag();
                      busRequest1.routeUserRequested.subscribe(busRequest1.user, busRequest.stationOfUser);
 
+                     selected.setContentView(R.layout.selected_line);
+                     TextView nameLine = selected.findViewById(R.id.NameLine);
+                     nameLine.setText("You selected line " + busRequest1.routeUserRequested.name);
+                     selected.show();
+
+                     final Handler handler = new Handler();
+                     handler.postDelayed(new Runnable() {
+                         @Override
+                         public void run() {
+                             selected.dismiss();
+                         }
+                     },500);
+
                      try {
                          Thread.sleep(5000);
                      } catch (InterruptedException e) {
@@ -253,7 +285,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          }
 
      }
-
 
 
     public void loadStationInfo()

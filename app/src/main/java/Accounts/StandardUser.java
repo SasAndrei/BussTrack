@@ -1,7 +1,14 @@
 package Accounts;
 
+import android.app.Dialog;
 import android.os.Build;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.example.busstrack.MainActivity;
+import com.example.busstrack.MapsActivity;
+import com.example.busstrack.R;
 import com.google.firebase.events.EventHandler;
 import com.google.firebase.events.Subscriber;
 
@@ -48,6 +55,16 @@ public class StandardUser extends User implements ISubscriber{
     @Override
     public void update() {
         //show popup
+        Dialog notification = MapsActivity.notification;
+        notification.setContentView(R.layout.bus_notification);
+        notification.show();
+        Button button = notification.findViewById(R.id.btnClose);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("click");
+                notification.dismiss();
+            }
+        });
         System.out.println("Your bus is close");
     }
 }

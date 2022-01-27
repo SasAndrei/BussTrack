@@ -1,5 +1,6 @@
 package com.example.busstrack;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -90,13 +91,15 @@ public class MainActivity extends AppCompatActivity {
     private String password;
     private String confirm;
 
+    public static Dialog notification;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
          fire.<Station>getData( this);
 
-
+        notification = new Dialog(this);
 
         super.onCreate(savedInstanceState);
         v = findViewById(android.R.id.content).getRootView();

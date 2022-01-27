@@ -9,9 +9,11 @@
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/activity_main.xml" value="0.536" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/activity_maps.xml" value="0.1793478260869565" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/admin.xml" value="0.13725490196078433" />
+        <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/bus_notification.xml" value="0.15" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/edited_map.xml" value="0.25" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/loading.xml" value="0.1953125" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/register.xml" value="0.375609756097561" />
+        <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/selected_line.xml" value="0.15" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/station_popup.xml" value="0.1953125" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/layout/wrongpassword.xml" value="0.2203125" />
         <entry key="..\:/AndroidProjects/BussTrack/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2703125" />

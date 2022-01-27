@@ -1,6 +1,10 @@
 package Accounts;
 
+import java.util.ArrayList;
+
 public class Admin extends User{
+
+    public ArrayList<User> allAcountsThatCanBeManaged;
 
     public Admin(String user, String pass) {
         super(user,pass);
@@ -21,6 +25,13 @@ public class Admin extends User{
 
     }
 
+    public ArrayList<User> getAllAcountsThatCanBeManaged() {
+        return allAcountsThatCanBeManaged;
+    }
+
+    public void setAllAcountsThatCanBeManaged(ArrayList<User> allAcountsThatCanBeManaged) {
+        this.allAcountsThatCanBeManaged = allAcountsThatCanBeManaged;
+    }
     public void editRoute()
     {
 

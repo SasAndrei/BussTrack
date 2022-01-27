@@ -2,11 +2,15 @@ package Accounts;
 
 import android.os.Build;
 
+import com.google.firebase.events.EventHandler;
+import com.google.firebase.events.Subscriber;
+
+import java.util.concurrent.Executor;
+
 import Traffic.Route;
 import Traffic.Station;
 
-public class StandardUser extends User{
-
+public class StandardUser extends User implements ISubscriber{
     public StandardUser(String user, String pass) {
         super(user,pass);
     }
@@ -41,5 +45,9 @@ public class StandardUser extends User{
 
     }
 
-
+    @Override
+    public void update() {
+        //show popup
+        System.out.println("Your bus is close");
+    }
 }

@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     public PopupWindow loadingWindow;
 
     boolean neverSwitchedBefore = true;
+    public static User currentUser;
 
     private Button button;
     private Button register;
@@ -261,11 +262,13 @@ public class MainActivity extends AppCompatActivity {
     public void checkCurrentUser() {
         for (User acc : usersWithNotification.getList()) {
             if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
-                if (acc.getUsername().equals("admin")) {
-                    
+                if(acc instanceof Admin)
+                {
+                    System.out.println("I am ADMIN");
                 }
                 else
                 {
+                    currentUser = acc;
                     switchActivities();
                 }
             }

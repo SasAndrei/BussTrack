@@ -8,10 +8,12 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Picture;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,6 +23,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
+import androidx.gridlayout.widget.GridLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,13 +53,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import Accounts.StandardUser;
+import Traffic.Bus;
+import Traffic.BusRequest;
 import Traffic.Route;
 import Traffic.Station;
 import Utils.Coordinate;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    public static Integer stationCount;
+
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
@@ -69,9 +77,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Server fire = new Server();
 
     public static ArrayList<Station> stations = new ArrayList<>();
-    ArrayList<Route> routes = new ArrayList<>();
-    Dialog dialog;
+    public static Integer stationCount;
 
+    public static ArrayList<Bus> busses = new ArrayList<>();
+    public static Integer busCount;
+
+    public static ArrayList<Route> routes = new ArrayList<>();
+    public static Integer routeCount;
+
+    Dialog dialog;
 
 
     private static LatLng latLng;
@@ -119,7 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng clujCenter = new LatLng(46.772483, 23.595355);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(clujCenter));
 
-         // fire.<Station>pushData("Station", newStations);
+        //fire.<Bus>pushData("Busses", buses);
 
         //load Stations
         loadStationsOnMap(stations);
@@ -194,18 +208,68 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);
         image = Bitmap.createScaledBitmap(image, 70, 70, false);
         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
+        marker.setTag(station);
 
 
     }
+
+    public BusRequest createBusRequest(Station stationWhereUserLocated, Route routeUserWants)
+    {
+        return new BusRequest(stationWhereUserLocated, routeUserWants, (StandardUser) MainActivity.currentUser);
+    }
+
+     public void addButtonsForEachRoute(Station station, GridLayout gridToAddRoutes, Context contextOfActivity)
+     {
+         gridToAddRoutes.removeAllViews();
+
+         gridToAddRoutes.setColumnCount(3);
+         station.checkRoutes();
+         ArrayList<Route> routes = station.routesThatPassThrough;
+         for(int i = 0; i < routes.size(); i++)
+         {
+             Button button = new Button(contextOfActivity);
+             button.setText(routes.get(i).getName());
+             BusRequest busRequest = createBusRequest(station, routes.get(i));
+             button.setTag(busRequest);
+             button.setOnClickListener(new View.OnClickListener() {
+                 public void onClick(View v) {
+                     BusRequest busRequest1 = (BusRequest) button.getTag();
+                     busRequest1.routeUserRequested.subscribe(busRequest1.user, busRequest.stationOfUser);
+
+                     try {
+                         Thread.sleep(5000);
+                     } catch (InterruptedException e) {
+                         e.printStackTrace();
+                     }
+                     for (Route route: routes) {
+                         route.checkIfBussesAreNearby();
+                     }
+                 }
+             });
+             button.setBackgroundColor(Color.parseColor("#ECC137"));
+             button.setTextColor(Color.parseColor("#FFFFFF"));
+             gridToAddRoutes.addView(button,i);
+         }
+
+     }
+
+
 
     public void loadStationInfo()
     {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {
             @Override
-            public boolean onMarkerClick(Marker arg0) {
+            public boolean onMarkerClick(Marker marker) {
+
+                Station station = (Station) marker.getTag();
 
                 dialog.setContentView(R.layout.station_popup);
+                TextView title = dialog.findViewById(R.id.INPUTstationName);
+                Context contextOfActivity = title.getContext();
+                GridLayout gridToAddRoutes = dialog.findViewById(R.id.gridLayoutForRoutes);
+                addButtonsForEachRoute(station, gridToAddRoutes, contextOfActivity);
+                title.setText(station.Name);
                 dialog.show();
                 return true;
             }

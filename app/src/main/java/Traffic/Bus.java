@@ -13,6 +13,10 @@ public class Bus {
         Longitude = longitude;
         Latitude = latitude;
     }
+    public Bus()
+    {
+
+    }
 
     public int getBusID() {
         return BusID;

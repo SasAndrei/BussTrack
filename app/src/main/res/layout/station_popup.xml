@@ -20,6 +20,7 @@
         tools:layout_editor_absoluteY="5dp">
 
         <TextView
+            android:id="@+id/INPUTstationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -32,33 +33,11 @@
 
 
         <androidx.gridlayout.widget.GridLayout
-            android:layout_width="330dp"
+            android:id="@+id/gridLayoutForRoutes"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btnfollow4"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
 
-                android:background="@color/yellow"
-                android:text="Line 1"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/btnfollow5"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:background="@color/yellow"
-                android:text="Line 2"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/btnfollow6"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:background="@color/yellow"
-                android:text="Line 3"
-                android:textColor="@color/white" />
         </androidx.gridlayout.widget.GridLayout>
 
     </LinearLayout>

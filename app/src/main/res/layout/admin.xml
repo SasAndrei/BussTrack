@@ -57,104 +57,190 @@
                 android:layout_marginBottom="10dp"
                 android:hint="Bus Id" />
 
+
+            <TextView
+                android:id="@+id/busLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_busId"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:text="Longitude:"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edt_busLongitude"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/busLongitude"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Longitude" />
+
+            <TextView
+                android:id="@+id/busLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_busLongitude"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:text="Latitude:"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edt_busLatitude"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/busLatitude"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Latitude" />
         <TextView
             android:id="@+id/busLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_busId"
+            android:layout_below="@+id/edt_busLatitude"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:text="Bus Line:"
             android:textColor="#000000"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/edt_busLine"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/busLine"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:hint="Bus Line" />
+            <EditText
+                android:id="@+id/edt_busLine"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/busLine"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Bus Line" />
 
-        <TextView
-            android:id="@+id/addStation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_busLine"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:text="Add a new station:"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            <Button
+                android:id="@+id/btnAddBus"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_busLine"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="#03B424"
+                android:text="ADD BUS"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/stationName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/addStation"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:text="Station Name:"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/addStation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnAddBus"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:text="Add a new station:"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/edt_stationName"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:layout_below="@+id/stationName"
-            android:layout_centerVertical="true"
-            android:hint="Station Name" />
+            <TextView
+                android:id="@+id/stationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addStation"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:text="Station Name:"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/busLongitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_stationName"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:text="Longitude:"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/edt_stationName"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/stationName"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Station Name" />
 
-        <EditText
-            android:id="@+id/edt_busLongitude"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/busLongitude"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:hint="Longitude" />
+            <TextView
+                android:id="@+id/stationLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_stationName"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:text="Longitude:"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/busLatitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edt_busLongitude"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:text="Latitude:"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/edt_stationLongitude"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/stationLongitude"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Longitude" />
 
-        <EditText
-            android:id="@+id/edt_busLatitude"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/busLatitude"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:hint="Latitude" />
+            <TextView
+                android:id="@+id/stationLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_stationLongitude"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:text="Latitude:"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edt_stationLatitude"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/stationLatitude"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Latitude" />
+
+            <Button
+                android:id="@+id/btnAddStation"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_stationLatitude"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="#03B424"
+                android:text="ADD STATION"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
+
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

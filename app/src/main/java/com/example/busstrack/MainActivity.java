@@ -61,7 +61,9 @@ import java.util.concurrent.TimeUnit;
 import Accounts.Admin;
 import Accounts.StandardUser;
 import Accounts.User;
+import Traffic.Bus;
 import Traffic.Station;
+import Utils.Coordinate;
 import Utils.CustomArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -269,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 if(acc instanceof Admin)
                 {
                     setContentView(R.layout.admin);
+                    adminMenu();
                 }
                 else
                 {
@@ -277,6 +280,75 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public void adminMenu() {
+        Button addBus = findViewById(R.id.btnAddBus);
+        addBus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("click");
+
+                EditText busid = findViewById(R.id.edt_busId);
+                String busidtxt = busid.getText().toString();
+
+                EditText longitude = findViewById(R.id.edt_busLongitude);
+                String longitudetxt = longitude.getText().toString();
+                String[] coords = longitudetxt.split("/");
+                Float degrees = Float.parseFloat(coords[0]);
+                Float minutes = Float.parseFloat(coords[1]);
+                Float seconds = Float.parseFloat(coords[2]);
+                Coordinate longitudeCoord = new Coordinate(degrees, minutes, seconds);
+
+                EditText latitude = findViewById(R.id.edt_busLatitude);
+                String latitudetxt = latitude.getText().toString();
+                coords = latitudetxt.split("/");
+                degrees = Float.parseFloat(coords[0]);
+                minutes = Float.parseFloat(coords[1]);
+                seconds = Float.parseFloat(coords[2]);
+                Coordinate latitudeCoord = new Coordinate(degrees, minutes, seconds);
+
+                EditText busline = findViewById(R.id.edt_busLine);
+                String buslinetxt = busline.getText().toString();
+
+                Bus newBus = new Bus(Integer.parseInt(busidtxt), longitudeCoord, latitudeCoord);
+
+                ArrayList<Bus> listToAdd = new ArrayList<>();
+                listToAdd.add(newBus);
+                fire.<Bus>pushData("Busses", listToAdd);
+            }
+        });
+
+        Button addStation = findViewById(R.id.btnAddStation);
+        addStation.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.out.println("click");
+
+                EditText stationName = findViewById(R.id.edt_stationName);
+                String stationNametxt = stationName.getText().toString();
+
+                EditText longitude = findViewById(R.id.edt_stationLongitude);
+                String longitudetxt = longitude.getText().toString();
+                String[] coords = longitudetxt.split("/");
+                Float degrees = Float.parseFloat(coords[0]);
+                Float minutes = Float.parseFloat(coords[1]);
+                Float seconds = Float.parseFloat(coords[2]);
+                Coordinate longitudeCoord = new Coordinate(degrees, minutes, seconds);
+
+                EditText latitude = findViewById(R.id.edt_stationLatitude);
+                String latitudetxt = latitude.getText().toString();
+                coords = latitudetxt.split("/");
+                degrees = Float.parseFloat(coords[0]);
+                minutes = Float.parseFloat(coords[1]);
+                seconds = Float.parseFloat(coords[2]);
+                Coordinate latitudeCoord = new Coordinate(degrees, minutes, seconds);
+
+                Station newStation = new Station(stationNametxt, longitudeCoord, latitudeCoord);
+
+                ArrayList<Station> listToAdd = new ArrayList<>();
+                listToAdd.add(newStation);
+                fire.<Station>pushData("Station", listToAdd);
+            }
+        });
     }
 
     public void getUserProfile() {

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -265,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 if(acc instanceof Admin)
                 {
                     System.out.println("I am ADMIN");
+                    setContentView(R.layout.admin);
                 }
                 else
                 {

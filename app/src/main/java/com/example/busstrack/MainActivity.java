@@ -268,7 +268,6 @@ public class MainActivity extends AppCompatActivity {
             if (acc.getUsername().equals(username) && acc.getPassword().equals(password)) {
                 if(acc instanceof Admin)
                 {
-                    System.out.println("I am ADMIN");
                     setContentView(R.layout.admin);
                 }
                 else

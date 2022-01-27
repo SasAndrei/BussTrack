@@ -86,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static ArrayList<Route> routes = new ArrayList<>();
     public static Integer routeCount;
 
-    Dialog dialog;
+    public static Dialog dialog;
     Dialog selected;
     public static Dialog notification;
 
@@ -212,7 +212,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     public void loadStationOnMap(Station station) {
         latLng = new LatLng(station.Longitude.asDouble(), station.Latitude.asDouble());
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.bus_marker);
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.stop_marker);
         image = Bitmap.createScaledBitmap(image, 70, 70, false);
         Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(image)));
         marker.setTag(station);
@@ -261,6 +261,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                      nameLine.setText("You selected line " + busRequest1.routeUserRequested.name);
                      selected.show();
 
+
                      final Handler handler = new Handler();
                      handler.postDelayed(new Runnable() {
                          @Override
@@ -269,14 +270,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                          }
                      },500);
 
-                     try {
-                         Thread.sleep(5000);
-                     } catch (InterruptedException e) {
-                         e.printStackTrace();
-                     }
-                     for (Route route: routes) {
-                         route.checkIfBussesAreNearby();
-                     }
+                     final Handler handler2 = new Handler();
+                     handler2.post(new Runnable() {
+                         @Override
+                         public void run() {
+                             try {
+                                 Thread.sleep(5000);
+                             } catch (InterruptedException e) {
+                                 e.printStackTrace();
+                             }
+                             for (Route route: routes) {
+                                 route.checkIfBussesAreNearby();
+                             }
+                         }
+                     });
+
                  }
              });
              button.setBackgroundColor(Color.parseColor("#ECC137"));
@@ -294,15 +302,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                Station station = (Station) marker.getTag();
+                if(marker.getTag() instanceof Bus) {
+                    System.out.println("Bus marker clicked");
+                }
+                else
+                {
+                    Station station = (Station) marker.getTag();
 
-                dialog.setContentView(R.layout.station_popup);
-                TextView title = dialog.findViewById(R.id.INPUTstationName);
-                Context contextOfActivity = title.getContext();
-                GridLayout gridToAddRoutes = dialog.findViewById(R.id.gridLayoutForRoutes);
-                addButtonsForEachRoute(station, gridToAddRoutes, contextOfActivity);
-                title.setText(station.Name);
-                dialog.show();
+                    dialog.setContentView(R.layout.station_popup);
+                    TextView title = dialog.findViewById(R.id.INPUTstationName);
+                    Context contextOfActivity = title.getContext();
+                    GridLayout gridToAddRoutes = dialog.findViewById(R.id.gridLayoutForRoutes);
+                    addButtonsForEachRoute(station, gridToAddRoutes, contextOfActivity);
+                    title.setText(station.Name);
+                    dialog.show();
+                }
+
                 return true;
             }
         });

@@ -21,6 +21,16 @@ public class Station {
     public Station()
     {
     }
+
+    public void checkRoutes(ArrayList<Route> routes) {
+        for (Route r : routes) {
+            for (Station s : r.stations) {
+                if (s.equals(this))
+                    routesThatPassThrough.add(r);
+            }
+        }
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -33,6 +43,7 @@ public class Station {
             return false;
         return true;
     }
+
     @Override
     public String toString()
     {

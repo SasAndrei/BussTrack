@@ -64,6 +64,7 @@
         android:layout_below="@+id/edt_userName"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/password"
+        android:inputType="textPassword"
         android:hint="Password" />
 
     <!--Button for Clicking after filling details-->

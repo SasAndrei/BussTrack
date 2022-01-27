@@ -96,6 +96,7 @@
         android:layout_below="@+id/edt_userName"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/password"
+        android:inputType="textPassword"
         android:hint="Password" />
 
     <EditText
@@ -106,6 +107,7 @@
         android:layout_below="@+id/edt_password"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/confirmPassword"
+        android:inputType="textPassword"
         android:hint="Confirm Password" />
 
     <!--Button for Clicking after filling details-->
